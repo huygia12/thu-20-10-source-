@@ -1,0 +1,4 @@
+qr/
+*.py
+requirements.txt
+pyproject.toml
