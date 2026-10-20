@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <title>Thư 20/10</title>
+    <meta name="description" content="Một lá thư nhỏ gửi em nhân ngày 20/10" />
+    <meta property="og:title" content="Gửi em ♡" />
+    <meta property="og:description" content="Chạm vào phong bì để mở thư nhé" />
+    <meta name="theme-color" content="#fbf7f8" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23e7667f' d='M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.8 4.5c2.2 0 3.6 1.3 5.2 3.2 1.6-1.9 3-3.2 5.2-3.2 3.8 0 5.9 3.9 4.4 7.3C19.5 16.4 12 21 12 21z'/%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Pangolin&display=swap&subset=vietnamese"
+    />
+    <style>
+      /* Layout: một màn hình dọc như điện thoại — cảnh 1 phong bì ở giữa, cảnh 2 lá thư trên nền túi phong bì hồng */
+      :root {
+        --ground: #fbf7f8; /* nền giấy trắng ngà hồng */
+        --ink: #4a3a40; /* mực nâu tím */
+        --rose: #f2b8c4; /* hồng phong bì */
+        --rose-deep: #e98fa3; /* hồng đậm, sáp niêm */
+        --rose-soft: #fde4ea; /* hồng nhạt */
+        --leaf: #7cc47a;
+        --paper: #fffdfb;
+        --f-script: "Dancing Script", "Brush Script MT", cursive;
+        --f-hand:
+          "Pangolin", "Comic Sans MS", "Segoe Print", system-ui, sans-serif;
+        color-scheme: light;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        background: var(--ground);
+        color: var(--ink);
+        font-family: var(--f-hand);
+        overflow: hidden;
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+        -webkit-tap-highlight-color: transparent;
+      }
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 55%,
+          rgba(120, 90, 100, 0.18) 100%
+        );
+      }
+      #petals {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+      }
+      #envScene::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+        background: radial-gradient(
+          circle at 50% 46%,
+          rgba(246, 160, 184, 0.55),
+          rgba(246, 170, 190, 0) 64%
+        );
+      }
+
+      .scene {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+        transition:
+          opacity 0.9s ease,
+          transform 0.9s ease;
+        z-index: 2;
+      }
+      .scene.off {
+        opacity: 0;
+        pointer-events: none;
+        transform: scale(0.97);
+      }
+
+      /* ---------- Cảnh 1: phong bì ---------- */
+      .env-wrap {
+        position: relative;
+        width: min(76vw, 330px);
+        cursor: pointer;
+        outline: none;
+        transition: transform 0.9s ease 0.2s;
+      }
+      .env-wrap.opened {
+        transform: translateY(48%);
+      }
+      .env-wrap:focus-visible {
+        outline: 2px dashed var(--rose-deep);
+        outline-offset: 14px;
+        border-radius: 8px;
+      }
+      .env {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1.55;
+      }
+      .env-back {
+        position: absolute;
+        inset: 0;
+        background: #eaa9b7;
+        border-radius: 6px;
+        box-shadow: 0 14px 30px rgba(200, 120, 140, 0.25);
+      }
+      .card {
+        position: absolute;
+        left: 7%;
+        right: 7%;
+        bottom: 6%;
+        height: 92%;
+        background: var(--paper);
+        border-radius: 4px;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        transition: transform 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.55s;
+      }
+      .opened .card {
+        transform: translateY(-62%);
+      }
+      .card .l1,
+      .card .l2 {
+        font-family: var(--f-script);
+        color: var(--rose-deep);
+        line-height: 1.05;
+        font-weight: 500;
+      }
+      .card .l1 {
+        font-size: clamp(22px, 7vw, 32px);
+      }
+      .card .l2 {
+        font-size: clamp(26px, 8.4vw, 38px);
+      }
+      .card .l3 {
+        font-family: var(--f-script);
+        color: var(--rose-deep);
+        font-size: clamp(24px, 7.4vw, 34px);
+        font-weight: 700;
+        margin-top: 2px;
+      }
+      .front {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        pointer-events: none;
+      }
+      .front svg,
+      .flap svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+      }
+      .flap {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 62%;
+        z-index: 4;
+        transform-origin: top center;
+        transform: scaleY(1);
+        transition:
+          transform 0.7s ease,
+          z-index 0s linear 0.2s;
+      }
+      .flap polygon {
+        fill: #f5c6d0;
+        transition: fill 0s linear 0.2s;
+      }
+      .opened .flap {
+        transform: scaleY(-1.5);
+        z-index: 1;
+      }
+      .opened .flap polygon {
+        fill: #f0b6c3;
+      }
+      .seal {
+        position: absolute;
+        left: 50%;
+        top: 62%;
+        width: 26px;
+        height: 26px;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+        transition:
+          opacity 0.3s,
+          transform 0.3s;
+      }
+      .opened .seal {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.4);
+      }
+      .hint {
+        margin-top: 34px;
+        font-size: 15px;
+        color: #a07a86;
+        letter-spacing: 0.02em;
+        animation: pulse 2s ease-in-out infinite;
+        transition: opacity 0.4s;
+      }
+      .opened ~ .hint {
+        opacity: 0;
+        animation: none;
+      }
+      @keyframes pulse {
+        50% {
+          opacity: 0.45;
+        }
+      }
+      .side-flower {
+        position: absolute;
+        width: 44%;
+        top: -18%;
+        z-index: 6;
+        transform: scale(0) rotate(-20deg);
+        transition: transform 0.9s cubic-bezier(0.3, 1.5, 0.5, 1) 1.3s;
+        pointer-events: none;
+      }
+      .side-flower.left {
+        left: -22%;
+      }
+      .side-flower.right {
+        right: -22%;
+        transform: scale(0) rotate(20deg);
+      }
+      .opened .side-flower.left {
+        transform: scale(1) rotate(-8deg);
+      }
+      .opened .side-flower.right {
+        transform: scale(1) rotate(10deg);
+      }
+
+      /* ---------- Cảnh 2: lá thư ---------- */
+      #letterScene {
+        justify-content: flex-start;
+        padding-block: max(
+            44px,
+            7dvh,
+            calc(env(safe-area-inset-top, 0px) + 20px)
+          )
+          max(16px, env(safe-area-inset-bottom, 0px));
+      }
+      .letter-col {
+        position: relative;
+        width: 100%;
+        max-width: 430px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .sheet {
+        position: relative;
+        z-index: 3;
+        background: var(--paper);
+        border-radius: 4px;
+        padding: 22px 22px 18px;
+        transform: rotate(-1deg);
+        box-shadow: 0 10px 26px rgba(160, 100, 120, 0.18);
+        flex: 0 0 auto;
+      }
+      .sheet::before {
+        content: "";
+        position: absolute;
+        right: -6px;
+        top: -8px;
+        width: 44px;
+        height: 18px;
+        background: rgba(242, 184, 196, 0.7);
+        transform: rotate(30deg);
+        border-radius: 2px;
+      }
+      .text {
+        height: min(46dvh, 420px);
+        overflow-y: auto;
+        scrollbar-width: none;
+        font-size: 16px;
+        line-height: 1.65;
+        -webkit-mask-image: linear-gradient(
+          transparent 0,
+          #000 18px,
+          #000 calc(100% - 26px),
+          transparent 100%
+        );
+        mask-image: linear-gradient(
+          transparent 0,
+          #000 18px,
+          #000 calc(100% - 26px),
+          transparent 100%
+        );
+      }
+      .text::-webkit-scrollbar {
+        display: none;
+      }
+      .text p {
+        margin: 0 0 0.7em;
+        text-wrap: pretty;
+      }
+      .text .greet {
+        font-size: 18px;
+      }
+      .text .sign {
+        font-family: var(--f-script);
+        font-size: 26px;
+        color: var(--rose-deep);
+        margin-top: 0.4em;
+      }
+      .text .pad {
+        height: 30px;
+      }
+      .pocket {
+        position: relative;
+        z-index: 2;
+        margin-top: -40px;
+        flex: 1 1 auto;
+        min-height: 220px;
+        max-height: 330px;
+        background: var(--rose-soft);
+        border-radius: 6px;
+        box-shadow: inset 0 0 0 1px rgba(233, 143, 163, 0.15);
+      }
+      .pocket::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 6px;
+        background: linear-gradient(
+          200deg,
+          rgba(242, 184, 196, 0.45),
+          transparent 60%
+        );
+        clip-path: polygon(0 0, 50% 40%, 100% 0, 100% 100%, 0 100%);
+      }
+      .bouquet {
+        position: absolute;
+        left: -4%;
+        bottom: -6%;
+        width: 56%;
+        max-width: 240px;
+      }
+      .polaroid {
+        position: absolute;
+        right: 4%;
+        top: 58px;
+        width: 44%;
+        max-width: 190px;
+        background: #fff;
+        padding: 8px 8px 30px;
+        transform: rotate(5deg);
+        box-shadow: 0 8px 20px rgba(120, 70, 90, 0.22);
+      }
+      .polaroid .ph {
+        aspect-ratio: 1/1;
+        background: linear-gradient(135deg, #f9d7df, #f3c0cc);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 13px;
+        color: #a86b7c;
+        padding: 10px;
+        overflow: hidden;
+      }
+      .polaroid .ph img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .polaroid svg {
+        position: absolute;
+        right: 10px;
+        bottom: 7px;
+        width: 16px;
+        height: 16px;
+      }
+      .replay {
+        position: relative;
+        z-index: 3;
+        align-self: center;
+        margin-top: 12px;
+        font: inherit;
+        font-size: 14px;
+        color: #a07a86;
+        background: none;
+        border: 1px solid rgba(160, 122, 134, 0.35);
+        border-radius: 20px;
+        padding: 6px 14px;
+        cursor: pointer;
+      }
+      .replay:focus-visible {
+        outline: 2px solid var(--rose-deep);
+        outline-offset: 2px;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          transition-duration: 0.01s !important;
+          transition-delay: 0s !important;
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="petals" aria-hidden="true"></canvas>
+
+    <section class="scene" id="envScene">
+      <div
+        class="env-wrap"
+        id="envBtn"
+        role="button"
+        tabindex="0"
+        aria-label="Mở phong bì"
+      >
+        <div class="env">
+          <div class="env-back"></div>
+          <div class="card">
+            <div class="l1">Happy Vietnam</div>
+            <div class="l2">Womenday</div>
+            <div class="l3">20/10</div>
+          </div>
+          <div class="front">
+            <svg
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <defs>
+                <linearGradient id="frontShine" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#fff" stop-opacity=".35" />
+                  <stop offset=".5" stop-color="#fff" stop-opacity="0" />
+                </linearGradient>
+              </defs>
+              <polygon points="0,0 50,56 100,0 100,100 0,100" fill="#f2b8c4" />
+              <polygon
+                points="0,0 50,56 100,0 100,100 0,100"
+                fill="url(#frontShine)"
+              />
+            </svg>
+          </div>
+          <div class="flap">
+            <svg
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <polygon points="0,0 100,0 50,100" />
+            </svg>
+          </div>
+          <svg class="seal" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="#e7667f"
+              d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.8 4.5c2.2 0 3.6 1.3 5.2 3.2 1.6-1.9 3-3.2 5.2-3.2 3.8 0 5.9 3.9 4.4 7.3C19.5 16.4 12 21 12 21z"
+            />
+          </svg>
+        </div>
+        <svg
+          class="side-flower left"
+          data-flower="1"
+          viewBox="0 0 200 200"
+          aria-hidden="true"
+        ></svg>
+        <svg
+          class="side-flower right"
+          data-flower="2"
+          viewBox="0 0 200 200"
+          aria-hidden="true"
+        ></svg>
+      </div>
+      <div class="hint">Chạm vào phong bì nhé ♡</div>
+    </section>
+
+    <section class="scene off" id="letterScene" aria-live="polite">
+      <div class="letter-col">
+        <article class="sheet"><div class="text" id="text"></div></article>
+        <div class="pocket">
+          <svg
+            class="bouquet"
+            id="bouquet"
+            viewBox="0 0 240 280"
+            aria-hidden="true"
+          ></svg>
+          <figure class="polaroid" style="margin: 0">
+            <div class="ph" id="photo"></div>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="none"
+                stroke="#5b4a50"
+                stroke-width="1.6"
+                d="M12 20s-7-4.3-8.9-8.6C1.7 8.3 3.6 5 7 5c2 0 3.3 1.2 5 3 1.7-1.8 3-3 5-3 3.4 0 5.3 3.3 3.9 6.4C19 15.7 12 20 12 20z"
+              />
+            </svg>
+          </figure>
+        </div>
+        <button class="replay" id="replay" type="button">Mở lại thư</button>
+      </div>
+    </section>
+
+    <script>
+      /* ======= NỘI DUNG — sửa ở đây ======= */
+      const THU = {
+        loiChao: "Em yêu của anh,",
+        doan: [
+          "Hôm nay là 20/10, anh muốn dành vài dòng để nói những điều mà bấy lâu nay anh luôn nghĩ thế, nhưng nhắc lại cho chắc hehe",
+          "Cảm ơn em vì đã vẫn luôn ở bên anh, kiên nhẫn đợi chờ anh, vẫn luôn tin tưởng và yêu thương anh như ngày đầu",
+          "Anh biết em đã phải chịu đựng nhiều áp lực, nhiều mệt mỏi, nhiều lo lắng trong khoảng thời gian anh công tác, nhưng em vẫn luôn cố gắng để không làm anh lo lắng. Anh biết điều đó không hề dễ dàng.",
+          "Anh biết có những ngày em có những suy nghĩ tiêu cực mà anh lại vô tâm với em. Từ nay anh hứa sẽ để ý nhiều hơn, chia sẻ với em nhiều hơn, để em không phải gồng mình một mình.",
+          "20/10 không chỉ là ngày của hoa và quà. Với anh, đó là dịp để nhắc lại rằng anh yêu em, và anh tự hào vì được đi cùng em trên mọi chặng đường.",
+          "Chúc em luôn xinh đẹp, khoẻ mạnh và lúc nào cũng được là chính mình. Mong em mãi giữ nụ cười rạng rỡ mà anh yêu nhất.",
+        ],
+        kyTen: "Anh yêu em rất rất nhìu! ♡",
+        anh: "images/anh_doi.jpg", // để trống = khung ảnh mẫu; điền đường dẫn ảnh, ví dụ "images/anh-doi.jpg"
+      };
+
+      /* ======= Hoa mẫu đơn vẽ bằng SVG ======= */
+      const NS = "http://www.w3.org/2000/svg";
+      let gid = 0;
+      function el(tag, attrs, parent) {
+        const e = document.createElementNS(NS, tag);
+        for (const k in attrs) e.setAttribute(k, attrs[k]);
+        parent && parent.appendChild(e);
+        return e;
+      }
+      function defs(svg) {
+        return svg.querySelector("defs") || el("defs", {}, svg);
+      }
+      function peony(svg, cx, cy, r, tone) {
+        const d = defs(svg),
+          id = "pg" + gid++;
+        const g1 = el(
+          "radialGradient",
+          { id, cx: "50%", cy: "50%", r: "60%" },
+          d,
+        );
+        el("stop", { offset: "0%", "stop-color": tone[0] }, g1);
+        el("stop", { offset: "100%", "stop-color": tone[1] }, g1);
+        const g = el("g", {}, svg);
+        const layers = [
+          [11, 1],
+          [9, 0.8],
+          [8, 0.62],
+          [7, 0.45],
+          [6, 0.3],
+        ];
+        layers.forEach(([n, s], li) => {
+          const rr = r * s;
+          for (let i = 0; i < n; i++) {
+            const a = (i / n) * 360 + li * 17;
+            el(
+              "ellipse",
+              {
+                cx: cx,
+                cy: cy - rr * 0.45,
+                rx: rr * 0.42,
+                ry: rr * 0.55,
+                fill: `url(#${id})`,
+                stroke: "rgba(214,110,135,.35)",
+                "stroke-width": 0.8,
+                transform: `rotate(${a} ${cx} ${cy})`,
+                opacity: 0.92,
+              },
+              g,
+            );
+          }
+        });
+        el("circle", { cx, cy, r: r * 0.14, fill: tone[1] }, g);
+        return g;
+      }
+      function leaf(svg, x, y, len, ang) {
+        const g = el(
+          "g",
+          { transform: `translate(${x} ${y}) rotate(${ang})` },
+          svg,
+        );
+        el(
+          "path",
+          {
+            d: `M0 0 Q ${len * 0.5} ${-len * 0.32} ${len} 0 Q ${len * 0.5} ${len * 0.32} 0 0Z`,
+            fill: "#7cc47a",
+          },
+          g,
+        );
+        el(
+          "path",
+          {
+            d: `M2 0 L ${len * 0.9} 0`,
+            stroke: "#5aa65a",
+            "stroke-width": 1.2,
+          },
+          g,
+        );
+      }
+      function stem(svg, x1, y1, x2, y2) {
+        el(
+          "path",
+          {
+            d: `M${x1} ${y1} Q ${(x1 + x2) / 2 + 8} ${(y1 + y2) / 2} ${x2} ${y2}`,
+            stroke: "#6db86b",
+            "stroke-width": 4,
+            fill: "none",
+            "stroke-linecap": "round",
+          },
+          svg,
+        );
+      }
+      const PINK = ["#fde3ea", "#f39bb0"],
+        PINK2 = ["#ffeef2", "#f6b1c1"];
+
+      document.querySelectorAll("[data-flower]").forEach((s, i) => {
+        stem(s, 100, 110, 100 + (i ? -30 : 30), 198);
+        leaf(s, 100 + (i ? -12 : 12), 150, 60, i ? 200 : -20);
+        leaf(s, 100 + (i ? -20 : 20), 175, 52, i ? -30 : 210);
+        peony(s, 100, 90, 68, i ? PINK2 : PINK);
+      });
+      (function () {
+        const s = document.getElementById("bouquet");
+        stem(s, 80, 120, 120, 270);
+        stem(s, 150, 95, 125, 270);
+        stem(s, 60, 170, 118, 270);
+        leaf(s, 108, 190, 70, -40);
+        leaf(s, 120, 200, 66, 215);
+        leaf(s, 96, 225, 58, -70);
+        leaf(s, 135, 175, 60, -10);
+        peony(s, 150, 92, 56, PINK2);
+        peony(s, 78, 118, 62, PINK);
+        peony(s, 60, 172, 40, PINK2);
+        // nơ
+        el(
+          "path",
+          {
+            d: "M120 238 C 92 214, 74 236, 92 250 C 104 258, 114 246, 120 238Z",
+            fill: "#f5a8ba",
+          },
+          s,
+        );
+        el(
+          "path",
+          {
+            d: "M124 238 C 152 214, 170 236, 152 250 C 140 258, 130 246, 124 238Z",
+            fill: "#f5a8ba",
+          },
+          s,
+        );
+        el(
+          "path",
+          {
+            d: "M119 240 L 100 278 M125 240 L 146 278",
+            stroke: "#f5a8ba",
+            "stroke-width": 6,
+            "stroke-linecap": "round",
+          },
+          s,
+        );
+        el("circle", { cx: 122, cy: 240, r: 7, fill: "#ef93a8" }, s);
+      })();
+
+      /* ======= Nội dung thư ======= */
+      const text = document.getElementById("text");
+      text.innerHTML = `<p class="greet"></p>${THU.doan.map(() => "<p></p>").join("")}<p class="sign"></p><div class="pad"></div>`;
+      const ps = text.querySelectorAll("p");
+      ps[0].textContent = THU.loiChao;
+      THU.doan.forEach((t, i) => (ps[i + 1].textContent = t));
+      ps[ps.length - 1].textContent = THU.kyTen;
+      const photo = document.getElementById("photo");
+      if (THU.anh) {
+        const im = new Image();
+        im.src = THU.anh;
+        im.alt = "Ảnh của hai đứa";
+        photo.appendChild(im);
+      } else {
+        photo.textContent = "Ảnh của hai bạn sẽ nằm ở đây";
+      }
+
+      /* ======= Điều khiển cảnh ======= */
+      const envScene = document.getElementById("envScene"),
+        letterScene = document.getElementById("letterScene"),
+        envBtn = document.getElementById("envBtn");
+      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let opened = false,
+        timer = null;
+      function openEnv() {
+        if (opened) return;
+        opened = true;
+        envBtn.classList.add("opened");
+        burst();
+        timer = setTimeout(showLetter, reduce ? 600 : 3600);
+      }
+      function showLetter() {
+        clearTimeout(timer);
+        envScene.classList.add("off");
+        letterScene.classList.remove("off");
+        text.scrollTop = 0;
+        startScroll(1400);
+        setFx("letter");
+      }
+      envBtn.addEventListener("click", () =>
+        opened ? showLetter() : openEnv(),
+      );
+      envBtn.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          envBtn.click();
+        }
+      });
+      document.getElementById("replay").addEventListener("click", () => {
+        stopScroll();
+        letterScene.classList.add("off");
+        envScene.classList.remove("off");
+        envBtn.classList.remove("opened");
+        opened = false;
+        setFx("env");
+      });
+
+      /* ======= Thư tự cuộn ======= */
+      let raf = 0,
+        last = 0,
+        paused = false,
+        resumeT = null,
+        acc = 0;
+      const SPEED = reduce ? 0 : 20; // px mỗi giây
+      function step(t) {
+        if (!last) last = t;
+        const dt = (t - last) / 1000;
+        last = t;
+        if (!paused && SPEED) {
+          acc += SPEED * dt;
+          const whole = Math.floor(acc);
+          if (whole) {
+            text.scrollTop += whole;
+            acc -= whole;
+          }
+        }
+        if (text.scrollTop + text.clientHeight < text.scrollHeight - 1)
+          raf = requestAnimationFrame(step);
+      }
+      function startScroll(delay) {
+        stopScroll();
+        setTimeout(() => {
+          last = 0;
+          raf = requestAnimationFrame(step);
+        }, delay);
+      }
+      function stopScroll() {
+        cancelAnimationFrame(raf);
+      }
+      function hold() {
+        paused = true;
+        clearTimeout(resumeT);
+        resumeT = setTimeout(() => {
+          paused = false;
+        }, 3500);
+      }
+      ["pointerdown", "wheel", "touchstart"].forEach((ev) =>
+        text.addEventListener(ev, hold, { passive: true }),
+      );
+
+      /* ======= Nền lãng mạn: cánh hoa hồng, trái tim, đốm sáng ======= */
+      const cv = document.getElementById("petals"),
+        cx = cv.getContext("2d");
+      let W,
+        H,
+        parts = [],
+        bokeh = [];
+      function size() {
+        const d = devicePixelRatio || 1;
+        W = innerWidth;
+        H = innerHeight;
+        cv.width = W * d;
+        cv.height = H * d;
+        cx.setTransform(d, 0, 0, d, 0, 0);
+      }
+      size();
+      addEventListener("resize", size);
+      const R = (a, b) => a + Math.random() * (b - a);
+      const PETAL = [
+        ["#f7a1b5", "#fde1e8"],
+        ["#e9788f", "#f9c3cf"],
+        ["#f4b6c4", "#fff0f3"],
+        ["#d95c78", "#f6a9ba"],
+      ];
+      const HEARTC = ["#e7667f", "#f08aa0", "#f5a3b4", "#d94b6a"];
+      const TARGET = {
+        env: { petal: 28, heart: 10, rise: 8 },
+        letter: { petal: 9, heart: 3, rise: 0 },
+      };
+      let mode = "env";
+      function setFx(m) {
+        mode = m;
+      }
+      function mk(kind, y) {
+        const p = {
+          kind,
+          x: R(0, W),
+          a: R(0, 6.28),
+          va: R(-1.2, 1.2),
+          ph: R(0, 6.28),
+        };
+        if (kind === "petal") {
+          Object.assign(p, {
+            y: y ?? R(-60, -15),
+            s: R(9, 16),
+            vy: R(22, 42),
+            vx: R(-10, 14),
+            f: R(0, 6.28),
+            vf: R(1.5, 3.5),
+            c: PETAL[Math.floor(R(0, PETAL.length))],
+          });
+        } else if (kind === "heart") {
+          Object.assign(p, {
+            y: y ?? R(-50, -15),
+            s: R(6, 12),
+            vy: R(20, 36),
+            vx: R(-8, 8),
+            c: HEARTC[Math.floor(R(0, HEARTC.length))],
+            o: R(0.5, 0.85),
+          });
+        } else {
+          Object.assign(p, {
+            y: y ?? H + R(10, 60),
+            s: R(5, 11),
+            vy: -R(18, 34),
+            vx: 0,
+            a: 0,
+            va: 0,
+            c: HEARTC[Math.floor(R(0, HEARTC.length))],
+            life: 0,
+            max: R(5, 9),
+          });
+        }
+        return p;
+      }
+      function seed() {
+        for (const k in TARGET.env)
+          for (let i = 0; i < TARGET.env[k]; i++)
+            parts.push(mk(k, k === "rise" ? R(H * 0.3, H) : R(0, H)));
+      }
+      seed();
+      for (let i = 0; i < 7; i++)
+        bokeh.push({
+          x: R(0, 1),
+          y: R(0, 1),
+          r: R(50, 120),
+          vx: R(-0.006, 0.006),
+          vy: R(-0.004, 0.004),
+          ph: R(0, 6.28),
+        });
+      function burst() {
+        for (let i = 0; i < 26; i++) {
+          const p = mk(Math.random() < 0.6 ? "petal" : "heart", H * 0.45);
+          p.x = W / 2 + R(-40, 40);
+          p.vy = -R(60, 130);
+          p.vx = R(-110, 110);
+          parts.push(p);
+        }
+      }
+      function heartPath(s) {
+        cx.beginPath();
+        cx.moveTo(0, s * 0.35);
+        cx.bezierCurveTo(
+          -s * 1.1,
+          -s * 0.35,
+          -s * 0.45,
+          -s * 1.05,
+          0,
+          -s * 0.38,
+        );
+        cx.bezierCurveTo(s * 0.45, -s * 1.05, s * 1.1, -s * 0.35, 0, s * 0.35);
+        cx.closePath();
+      }
+      function petalPath(s) {
+        cx.beginPath();
+        cx.moveTo(0, s);
+        cx.bezierCurveTo(
+          -s * 1.15,
+          s * 0.25,
+          -s * 0.95,
+          -s * 0.95,
+          -s * 0.15,
+          -s * 0.78,
+        );
+        cx.quadraticCurveTo(0, -s * 0.6, s * 0.15, -s * 0.78);
+        cx.bezierCurveTo(s * 0.95, -s * 0.95, s * 1.15, s * 0.25, 0, s);
+        cx.closePath();
+      }
+      let lt = 0;
+      function draw(t) {
+        const dt = Math.min(0.05, (t - (lt || t)) / 1000);
+        lt = t;
+        cx.clearRect(0, 0, W, H);
+        const strong = mode === "env";
+        // đốm sáng hồng mờ
+        bokeh.forEach((b) => {
+          b.x += b.vx * dt;
+          b.y += b.vy * dt;
+          if (b.x < -0.2 || b.x > 1.2) b.vx *= -1;
+          if (b.y < -0.2 || b.y > 1.2) b.vy *= -1;
+          const al =
+              (strong ? 0.22 : 0.1) * (0.7 + 0.3 * Math.sin(t / 1600 + b.ph)),
+            X = b.x * W,
+            Y = b.y * H;
+          const g = cx.createRadialGradient(X, Y, 0, X, Y, b.r);
+          g.addColorStop(0, `rgba(244,160,180,${al})`);
+          g.addColorStop(1, "rgba(244,160,180,0)");
+          cx.fillStyle = g;
+          cx.beginPath();
+          cx.arc(X, Y, b.r, 0, 6.28);
+          cx.fill();
+        });
+        parts.forEach((p) => {
+          if (p.kind === "rise") {
+            p.life += dt;
+            p.y += p.vy * dt;
+            p.x += Math.sin(t / 700 + p.ph) * 0.5;
+            const k = p.life / p.max,
+              al = Math.max(0, Math.min(1, k * 4, (1 - k) * 2)) * 0.7;
+            cx.save();
+            cx.translate(p.x, p.y);
+            cx.scale(
+              1 + 0.06 * Math.sin(t / 300 + p.ph),
+              1 + 0.06 * Math.sin(t / 300 + p.ph),
+            );
+            cx.globalAlpha = al * 0.35;
+            cx.fillStyle = p.c;
+            heartPath(p.s * 1.8);
+            cx.fill();
+            cx.globalAlpha = al;
+            heartPath(p.s);
+            cx.fill();
+            cx.restore();
+            return;
+          }
+          p.vy = Math.min(p.vy + dt * 40, p.kind === "petal" ? 44 : 38);
+          p.y += p.vy * dt;
+          p.vx += (Math.sin(t / 1100 + p.ph) * 14 - p.vx) * dt * 0.8;
+          p.x += p.vx * dt;
+          p.a += p.va * dt;
+          cx.save();
+          cx.translate(p.x, p.y);
+          cx.rotate(p.a);
+          if (p.kind === "petal") {
+            p.f += p.vf * dt;
+            const sx = Math.cos(p.f);
+            cx.scale(Math.abs(sx) < 0.12 ? 0.12 * Math.sign(sx || 1) : sx, 1);
+            const g = cx.createLinearGradient(0, p.s, 0, -p.s);
+            g.addColorStop(0, p.c[0]);
+            g.addColorStop(1, p.c[1]);
+            cx.globalAlpha = (strong ? 0.88 : 0.6) * (sx < 0 ? 0.8 : 1);
+            cx.fillStyle = g;
+            petalPath(p.s);
+            cx.fill();
+            cx.globalAlpha *= 0.35;
+            cx.strokeStyle = p.c[0];
+            cx.lineWidth = 0.8;
+            cx.beginPath();
+            cx.moveTo(0, p.s * 0.8);
+            cx.quadraticCurveTo(p.s * 0.1, 0, 0, -p.s * 0.5);
+            cx.stroke();
+          } else {
+            cx.globalAlpha = p.o * (strong ? 1 : 0.7);
+            cx.fillStyle = p.c;
+            heartPath(p.s);
+            cx.fill();
+          }
+          cx.restore();
+        });
+        parts = parts.filter((p) =>
+          p.kind === "rise" ? p.life < p.max && p.y > -30 : p.y < H + 40,
+        );
+        const want = TARGET[mode];
+        for (const k in want) {
+          let n = parts.filter((p) => p.kind === k).length;
+          while (n++ < want[k]) parts.push(mk(k));
+        }
+        requestAnimationFrame(draw);
+      }
+      if (!reduce) requestAnimationFrame(draw);
+    </script>
+  </body>
+</html>
